@@ -1,0 +1,31 @@
+name = "example-remix"
+
+workers_dev = true
+main = "./build/index.js"
+# https://developers.cloudflare.com/workers/platform/compatibility-dates
+compatibility_date = "2022-04-05"
+compatibility_flags = ["streams_enable_constructors"]
+
+ kv_namespaces = [
+  # put here your KV
+  { binding = "__example-remix-workers_sites_assets", id = "8c8c578f3be24ec5b93f71338d8ba60b" }
+]
+ 
+
+[site]
+  bucket = "./public"
+
+[build]
+  command = "npm run build"
+
+[build.upload]
+  format = "modules"
+
+[durable_objects]
+bindings = [
+  { name = "COUNTER", class_name = "Counter" }
+]
+
+[[migrations]]
+tag = "v2" # Should be unique for each entry
+new_classes = ["Counter"]
